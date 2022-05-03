@@ -4,13 +4,20 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 
 /**
  * Customer
  *
  * @ORM\Table(name="Customer")
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
- * @ApiResource 
+ * @ApiResource(attributes={"pagination_enabled": true})
+ * @ApiFilter(SearchFilter::class, properties={"idcustomer": "exact", "society": "partial"})
+ * @ApiFilter(RangeFilter::class, properties={"idsalesperson"})
+ * @ApiFilter(OrderFilter::class, properties={"idcustomer"})
  */
 class Customer
 {
