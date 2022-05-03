@@ -26,3 +26,4 @@ services:
     App\Controller\Api\:
         resource: '../src/Controller/Api/'
         tags: ['apicontroller.service_arguments']    
+

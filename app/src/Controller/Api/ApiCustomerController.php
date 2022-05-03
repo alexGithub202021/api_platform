@@ -16,42 +16,41 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ApiCustomerController extends AbstractController
 {
-	private $customerRepository;
+    private $customerRepository;
 
-	public function __construct(CustomerRepository $customerRepository)
-	{
-		$this->customerRepository = $customerRepository;
-	}
+    public function __construct(CustomerRepository $customerRepository)
+    {
+        $this->customerRepository = $customerRepository;
+    }
 
-	/**
-	 * @Route("/countCustomers", methods="GET")
-	 */
-	public function countCustomers(): Response
-	{
-		$sql = "select count(*) from Customer where idcustomer = :id";
-		$id = 2103;
-		$stmt = $this->customerRepository->getManager()->getConnection()->prepare($sql);
-		$stmt->bindParam('id', $id);
-		$res = $stmt->executeQuery([]);
+    /**
+     * @Route("/countCustomers", methods="GET")
+     */
+    public function countCustomers(): Response
+    {
+        $sql = "select count(*) from Customer where idcustomer = :id";
+        $id = 2103;
+        $stmt = $this->customerRepository->getManager()->getConnection()->prepare($sql);
+        $stmt->bindParam('id', $id);
+        $res = $stmt->executeQuery([]);
 
-		return new JsonResponse(intval($res->fetchOne()));
-	}
+        return new JsonResponse(intval($res->fetchOne()));
+    }
 
-	/**
-	 * @Route("/filteredCustomers/{idOffice}", methods="GET")
-	 */
-	public function filteredCustomers(int $idOffice): Response
-	{
-		if (!$idOffice) {
-			throw new HttpException(400, "Invalid id");
-			// return new JsonResponse("Invalid id", 404);
-		}
-		$sql = "select * from Customer join Office on Customer.idoffice = Office.idoffice where Office.idoffice = :id";
-		$id = $idOffice;
-		$stmt = $this->customerRepository->getManager()->getConnection()->prepare($sql);
-		$stmt->bindParam('id', $id);
-		$res = $stmt->executeQuery([]);
+    /**
+     * @Route("/filteredCustomers/{idOffice}", methods="GET")
+     */
+    public function filteredCustomers(int $idOffice): Response
+    {
+        if (!$idOffice) {
+            throw new HttpException(400, "Invalid id");
+        }
+        $sql = "select * from Customer join Office on Customer.idoffice = Office.idoffice where Office.idoffice = :id";
+        $id = $idOffice;
+        $stmt = $this->customerRepository->getManager()->getConnection()->prepare($sql);
+        $stmt->bindParam('id', $id);
+        $res = $stmt->executeQuery([]);
 
-		return new JsonResponse($res->fetchAllAssociative());
-	}
+        return new JsonResponse($res->fetchAllAssociative());
+    }
 }

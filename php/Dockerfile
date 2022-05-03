@@ -5,17 +5,18 @@ RUN apt-get update && apt-get install -y zlib1g-dev g++ git libicu-dev zip libzi
     && pecl install apcu \
     && docker-php-ext-enable apcu \
     && docker-php-ext-configure zip \
-    && docker-php-ext-install zip \
-    && pecl install xdebug && docker-php-ext-enable xdebug
+    && docker-php-ext-install zip 
+    # \
+    # && pecl install xdebug && docker-php-ext-enable xdebug
 
 # Configure xDebug
-RUN echo "\n\
-    xdebug.mode=debug\n\
-    xdebug.discover_client_host=1\n\
-    xdebug.client_port=9003\n\
-    xdebug.XDEBUG_SESSION=VSCODE \n\
-    xdebug.log=/var/www/sf/xdebug.log\n\
-    ">> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini    
+# RUN echo "\n\
+#     xdebug.mode=debug\n\
+#     xdebug.discover_client_host=1\n\
+#     xdebug.client_port=9003\n\
+#     xdebug.XDEBUG_SESSION=VSCODE \n\
+#     xdebug.log=/var/www/sf/xdebug.log\n\
+#     ">> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini    
 
 WORKDIR /var/www/sf
 
